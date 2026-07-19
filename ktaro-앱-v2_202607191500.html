@@ -154,7 +154,7 @@ function renderMain(){
  '<div class="opt" onclick="startToday()"><div class="ic">🌙</div><div><div class="ti">오늘 타로</div><div class="de">오늘 하루의 흐름, 한 장으로</div></div><div class="go">›</div></div>'+
  '<div class="opt" onclick="startTopic()"><div class="ic">🔮</div><div><div class="ti">주제별 타로</div><div class="de">연애·일·돈·관계… 궁금한 주제로</div></div><div class="go">›</div></div>'+
  '<div class="opt" onclick="startLife()"><div class="ic">✨</div><div><div class="ti">인생 타로</div><div class="de">삶의 큰 흐름을 깊게 (3·10장)</div></div><div class="go">›</div></div>'+
- '<div class="mdisc">성찰과 재미를 위한 것으로, 전문 상담·의학적·법적·재정적 결정을 대체하지 않아요.<br>힘든 마음이 계속되면 주변이나 전문기관의 도움을 받아보세요.</div>';
+ '<div class="mdisc">성찰과 재미를 위한 것으로, 전문 상담·의학적·법적·재정적 결정을 대체하지 않아요.<br>힘든 마음이 계속되면 주변이나 전문기관의 도움을 받아보세요.</div>'+'<footer class="footer"><div class="fl">ATLAS · THE ASTRO-COMPASS</div><div class="fc">Tarot Reading &amp; Alignment · Arcana No.0<br>© 2026 ATLAS. All rights reserved.<br>본 서비스는 성찰·재미를 위한 것으로 전문 상담을 대체하지 않습니다.</div></footer>';
 }
 function showMain(){chat.style.display='none';main.style.display='block';homeBtn.style.display='none';main.scrollTop=0;renderMain();}
 function toChat(){main.style.display='none';chat.style.display='flex';homeBtn.style.display='block';chat.innerHTML='';}
@@ -164,7 +164,9 @@ let BUSY=false;
 async function startTopic(){toChat();BUSY=true;await catSay('안녕, 밤 고양이 <b>묘묘</b>야 🐈‍⬛ 무엇이 궁금해?',420);BUSY=false;askCategory();}
 async function startLife(){toChat();BUSY=true;await catSay('인생 타로구나. 삶의 어떤 흐름을 볼까?',420);BUSY=false;
  quick([['🌌 인생 전반',()=>askSpread({domain:'self',e:'✨'},'인생 전반',true),0],['🔀 지금의 전환점',()=>askSpread({domain:'self',e:'✨'},'지금의 전환점',true),0],['📅 올해의 흐름',()=>askSpread({domain:'self',e:'✨'},'올해의 흐름',true),0]]);}
-async function startToday(){toChat();BUSY=true;await catSay('오늘의 너를 뽑아볼까 🐾',400);await shuffleSelectRun({domain:'self',e:'🌙'},'오늘의 나',1);}
+async function startToday(){toChat();BUSY=true;await catSay('오늘의 너를 한 장 뽑아봤어 🐾',420);
+ const seed=aid()+'|'+td()+'|today';const c=draw(seed,1,false);
+ await runFromCards({domain:'self',e:'🌙'},'오늘의 나',1,false,false,seed,c);}
 function askCategory(){quick(CATS.map(c=>[c.g,()=>{bubble(c.g,'me');askSub(c);},0]));}
 function askSub(cat){
  catSay('어떤 게 궁금해?',360).then(()=>quick(cat.subs.map(s=>[s,()=>{bubble(s,'me');askSpread(cat,s,false);},0])));
@@ -175,7 +177,8 @@ function askSpread(cat,sub,life){
   quick(opts);
  });
 }
-async function shuffleSelectRun(cat,sub,n){
+async function startReading(cat,sub,n){
+ if(BUSY)return;bubble(n+'장으로 볼래','me');BUSY=true;
  const seed=Date.now()+''+Math.random();
  await catSay('카드를 섞을게 🐾',360);
  const sh=el('<div class="shufwrap"><div class="shuffle"><div class="sc"></div><div class="sc"></div><div class="sc"></div><div class="sc"></div><div class="sc"></div></div></div>');
@@ -186,7 +189,6 @@ async function shuffleSelectRun(cat,sub,n){
  const cards=picks.map(i=>({id:order[i],o:(hsh(seed+':o:'+order[i])&1)?'reversed':'upright'}));
  await runFromCards(cat,sub,n,n===10,TIMING.has(sub),seed,cards);
 }
-async function startReading(cat,sub,n){if(BUSY)return;bubble(n+'장으로 볼래','me');BUSY=true;await shuffleSelectRun(cat,sub,n);}
 function selectFan(n){return new Promise(res=>{
  const M=22,picks=[];
  const wrap=document.createElement('div');wrap.className='fanwrap';

@@ -55,7 +55,7 @@ body{max-width:460px;margin:0 auto;background:radial-gradient(900px 600px at 50%
 .refs .rt{font-size:11px;font-weight:700;color:var(--acc);cursor:pointer}
 .cs{display:inline-block;background:#2b2150;color:#d9ccff;border-radius:100px;padding:3px 9px;font-size:11px;margin:3px 4px 0 0}
 /* splash */
-#splash{position:fixed;inset:0;max-width:460px;margin:0 auto;background:#201640;z-index:200;display:flex;align-items:center;justify-content:center;transition:opacity .6s}
+#splash{position:fixed;inset:0;max-width:460px;margin:0 auto;background:#173e43;z-index:200;display:flex;align-items:center;justify-content:center;transition:opacity .6s}
 #splash img{width:100%;height:100%;object-fit:contain}
 #splash .sp-tap{position:absolute;bottom:44px;left:0;right:0;text-align:center;color:#e9e2cf;font-size:12.5px;letter-spacing:.14em;opacity:.85;animation:sblink 1.6s infinite}
 @keyframes sblink{50%{opacity:.3}}
@@ -92,26 +92,11 @@ body{max-width:460px;margin:0 auto;background:radial-gradient(900px 600px at 50%
 @keyframes deal{from{opacity:0;transform:translateY(-24px) scale(.85)}to{opacity:1;transform:none}}
 .pagefoot{flex-shrink:0;text-align:center;font-family:"Cinzel",serif;font-size:9.5px;color:var(--mute);padding:8px 10px calc(8px + env(safe-area-inset-bottom));border-top:1px solid var(--line);letter-spacing:.08em;background:rgba(18,13,36,.7)}
 .pagefoot b{color:#e9e2cf;font-weight:700}
-.shufwrap{align-self:stretch;display:flex;justify-content:center;margin:2px 0}
-.spread{align-self:stretch;display:flex;justify-content:center;padding:8px 2px 4px}
-.srow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.tc .plab{font-size:9.5px;color:var(--acc);font-weight:700;margin-bottom:3px;min-height:12px;line-height:1.2}
-.celtic{display:flex;gap:10px;justify-content:center;align-items:center}
-.cx{display:grid;grid-template-columns:repeat(3,46px);grid-template-rows:repeat(3,74px);gap:6px;place-items:center}
-.cx .p5{grid-column:2;grid-row:1}.cx .p4{grid-column:1;grid-row:2}.cx .pc{grid-column:2;grid-row:2}.cx .p6{grid-column:3;grid-row:2}.cx .p3{grid-column:2;grid-row:3}
-.mcw{position:relative;width:46px;height:74px}
-.pc{position:relative;width:46px;height:74px}
-.pc .c1{position:absolute;inset:0}
-.pc .c2{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(90deg);z-index:2}
-.mc{width:46px;height:74px;border-radius:6px;object-fit:cover;border:1px solid #4a3a8a;box-shadow:0 3px 8px rgba(0,0,0,.45);display:block}
-.mc.rev{transform:rotate(180deg)}
-.cxnum{position:absolute;top:-6px;left:-5px;background:var(--gold);color:#2a1d05;font-size:9px;font-weight:800;border-radius:50%;width:15px;height:15px;display:flex;align-items:center;justify-content:center;z-index:5}
-.staff{display:flex;flex-direction:column;gap:6px}
 canvas{display:none}
 </style></head>
 <body>
-<div id="splash" onclick="hideSplash()"><img src="atlas_p.jpg" alt="ATLAS · The Astro Tarot"><div class="sp-tap">탭하여 시작 ✦</div></div>
-<div class="top"><img class="emblem" src="atlas_head.jpg" alt="ATLAS"><div class="brand"><div class="bnm">ATLAS</div><div class="bst">THE ASTRO-COMPASS</div></div><button class="home" id="homeBtn" onclick="showMain()">처음으로</button></div>
+<div id="splash" onclick="hideSplash()"><img src="atlas.jpg" alt="ATLAS · The Astro Tarot"><div class="sp-tap">탭하여 시작 ✦</div></div>
+<div class="top"><img class="emblem" src="atlas.jpg" alt="ATLAS"><div class="brand"><div class="bnm">ATLAS</div><div class="bst">THE ASTRO-COMPASS</div></div><button class="home" id="homeBtn" onclick="showMain()">처음으로</button></div>
 <div id="main"></div>
 <div id="chat"></div>
 <div class="pagefoot">© 2026 <b>ATLAS</b> · THE ASTRO-COMPASS · Tarot Reading &amp; Alignment</div>
@@ -150,11 +135,11 @@ function quick(items){const q=document.createElement('div');q.className='quick';
 
 // ---- views ----
 function renderMain(){
- main.innerHTML='<div class="hero"><div class="hl-top">✦ THE ASTRO-COMPASS ✦</div><img class="hl-emb" src="atlas_head.jpg" alt="ATLAS"><div class="hl-main">ATLAS</div><div class="hl-sub">TAROT READING &amp; ALIGNMENT</div></div>'+
+ main.innerHTML='<div class="hero"><div class="hl-top">✦ THE ASTRO-COMPASS ✦</div><img class="hl-emb" src="atlas.jpg" alt="ATLAS"><div class="hl-main">ATLAS</div><div class="hl-sub">TAROT READING &amp; ALIGNMENT</div></div>'+
  '<div class="opt" onclick="startToday()"><div class="ic">🌙</div><div><div class="ti">오늘 타로</div><div class="de">오늘 하루의 흐름, 한 장으로</div></div><div class="go">›</div></div>'+
  '<div class="opt" onclick="startTopic()"><div class="ic">🔮</div><div><div class="ti">주제별 타로</div><div class="de">연애·일·돈·관계… 궁금한 주제로</div></div><div class="go">›</div></div>'+
  '<div class="opt" onclick="startLife()"><div class="ic">✨</div><div><div class="ti">인생 타로</div><div class="de">삶의 큰 흐름을 깊게 (3·10장)</div></div><div class="go">›</div></div>'+
- '<div class="mdisc">성찰과 재미를 위한 것으로, 전문 상담·의학적·법적·재정적 결정을 대체하지 않아요.<br>힘든 마음이 계속되면 주변이나 전문기관의 도움을 받아보세요.</div>';
+ '<div class="mdisc">성찰과 재미를 위한 것으로, 전문 상담·의학적·법적·재정적 결정을 대체하지 않아요.<br>힘든 마음이 계속되면 주변이나 전문기관의 도움을 받아보세요.</div>'+'<footer class="footer"><div class="fl">ATLAS · THE ASTRO-COMPASS</div><div class="fc">Tarot Reading &amp; Alignment · Arcana No.0<br>© 2026 ATLAS. All rights reserved.<br>본 서비스는 성찰·재미를 위한 것으로 전문 상담을 대체하지 않습니다.</div></footer>';
 }
 function showMain(){chat.style.display='none';main.style.display='block';homeBtn.style.display='none';main.scrollTop=0;renderMain();}
 function toChat(){main.style.display='none';chat.style.display='flex';homeBtn.style.display='block';chat.innerHTML='';}
@@ -164,7 +149,9 @@ let BUSY=false;
 async function startTopic(){toChat();BUSY=true;await catSay('안녕, 밤 고양이 <b>묘묘</b>야 🐈‍⬛ 무엇이 궁금해?',420);BUSY=false;askCategory();}
 async function startLife(){toChat();BUSY=true;await catSay('인생 타로구나. 삶의 어떤 흐름을 볼까?',420);BUSY=false;
  quick([['🌌 인생 전반',()=>askSpread({domain:'self',e:'✨'},'인생 전반',true),0],['🔀 지금의 전환점',()=>askSpread({domain:'self',e:'✨'},'지금의 전환점',true),0],['📅 올해의 흐름',()=>askSpread({domain:'self',e:'✨'},'올해의 흐름',true),0]]);}
-async function startToday(){toChat();BUSY=true;await catSay('오늘의 너를 뽑아볼까 🐾',400);await shuffleSelectRun({domain:'self',e:'🌙'},'오늘의 나',1);}
+async function startToday(){toChat();BUSY=true;await catSay('오늘의 너를 한 장 뽑아봤어 🐾',420);
+ const seed=aid()+'|'+td()+'|today';const c=draw(seed,1,false);
+ await runFromCards({domain:'self',e:'🌙'},'오늘의 나',1,false,false,seed,c);}
 function askCategory(){quick(CATS.map(c=>[c.g,()=>{bubble(c.g,'me');askSub(c);},0]));}
 function askSub(cat){
  catSay('어떤 게 궁금해?',360).then(()=>quick(cat.subs.map(s=>[s,()=>{bubble(s,'me');askSpread(cat,s,false);},0])));
@@ -175,10 +162,11 @@ function askSpread(cat,sub,life){
   quick(opts);
  });
 }
-async function shuffleSelectRun(cat,sub,n){
+async function startReading(cat,sub,n){
+ if(BUSY)return;bubble(n+'장으로 볼래','me');BUSY=true;
  const seed=Date.now()+''+Math.random();
  await catSay('카드를 섞을게 🐾',360);
- const sh=el('<div class="shufwrap"><div class="shuffle"><div class="sc"></div><div class="sc"></div><div class="sc"></div><div class="sc"></div><div class="sc"></div></div></div>');
+ const sh=el('<div class="msg cat" style="max-width:97%"><div class="ava">🐈‍⬛</div><div class="bub" style="background:transparent;padding:2px"><div class="shuffle"><div class="sc"></div><div class="sc"></div><div class="sc"></div><div class="sc"></div><div class="sc"></div></div></div></div>');
  await wait(1500);sh.remove();
  await catSay('마음이 가는 카드 <b>'+n+'장</b>을 골라줘 🐾',400);
  const order=[...DECK].sort((a,b)=>hsh(seed+':'+a)-hsh(seed+':'+b));
@@ -186,7 +174,6 @@ async function shuffleSelectRun(cat,sub,n){
  const cards=picks.map(i=>({id:order[i],o:(hsh(seed+':o:'+order[i])&1)?'reversed':'upright'}));
  await runFromCards(cat,sub,n,n===10,TIMING.has(sub),seed,cards);
 }
-async function startReading(cat,sub,n){if(BUSY)return;bubble(n+'장으로 볼래','me');BUSY=true;await shuffleSelectRun(cat,sub,n);}
 function selectFan(n){return new Promise(res=>{
  const M=22,picks=[];
  const wrap=document.createElement('div');wrap.className='fanwrap';
@@ -203,10 +190,9 @@ async function runFromCards(cat,sub,n,celtic,timing,seed,cards){
  BUSY=true;const dom=cat.domain;
  const posArr=posFor(dom,n);
  await catSay(pick(BANK.intro[dom]||BANK.intro.self,seed+'i'),620);
- await catSay(n>1?'네가 고른 카드를 펼쳐볼게 🐾':'카드를 펼쳐볼게 🐾',440);
+ if(n>1)await catSay('카드를 뽑아볼게 🐾',480);
  await wait(200);
- const labels=cards.map((c,i)=>celtic?CELTIC[i]:POSLAB[posArr[i]]);
- el('<div class="spread">'+spreadHtml(cards,labels,celtic)+'</div>');
+ el('<div class="msg cat" style="max-width:97%"><div class="ava">🐈‍⬛</div><div class="bub" style="background:transparent;padding:4px">'+cardsHtml(cards)+'</div></div>');
  let g=[],refs=[];
  const delay=n>=10?380:640;
  for(let i=0;i<cards.length;i++){
@@ -232,8 +218,6 @@ async function runFromCards(cat,sub,n,celtic,timing,seed,cards){
  BUSY=false;
 }
 function cardsHtml(cards){return '<div class="cards">'+cards.map((c,i)=>{const cd=CARDS[c.id];return '<div class="tc deal '+(c.o==='reversed'?'rev':'')+'" style="animation-delay:'+(i*0.11)+'s"><img src="'+imgsrc(c.id)+'" alt="'+cd.ko+'" loading="lazy"><div class="cn">'+cd.ko+'</div><div class="or">'+(c.o==='reversed'?'역':'정')+'</div></div>';}).join('')+'</div>';}
-function spreadHtml(cards,labels,celtic){if(celtic)return celticHtml(cards);return '<div class="srow">'+cards.map(function(c,i){var cd=CARDS[c.id];return '<div class="tc deal '+(c.o==='reversed'?'rev':'')+'" style="animation-delay:'+(i*0.1)+'s"><div class="plab">'+labels[i]+'</div><img src="'+imgsrc(c.id)+'" alt="'+cd.ko+'" loading="lazy"><div class="cn">'+cd.ko+'</div><div class="or">'+(c.o==='reversed'?'역':'정')+'</div></div>';}).join('')+'</div>';}
-function celticHtml(cards){function mc(c){return '<img class="mc '+(c.o==='reversed'?'rev':'')+'" src="'+imgsrc(c.id)+'" alt="'+CARDS[c.id].ko+'" loading="lazy">';}function w(c,i,cls){return '<div class="mcw '+cls+'"><span class="cxnum">'+(i+1)+'</span>'+mc(c)+'</div>';}var cross='<div class="cx">'+w(cards[4],4,'p5')+w(cards[3],3,'p4')+'<div class="pc"><span class="cxnum">1</span><div class="c1">'+mc(cards[0])+'</div><div class="c2">'+mc(cards[1])+'</div></div>'+w(cards[5],5,'p6')+w(cards[2],2,'p3')+'</div>';var staff='<div class="staff">'+[9,8,7,6].map(function(i){return w(cards[i],i,'st');}).join('')+'</div>';return '<div class="celtic">'+cross+staff+'</div>';}
 function saveJournal(cat,sub,cards){let j=JSON.parse(localStorage.getItem('ktaro_j')||'[]');j.unshift({t:sub,e:cat.e,d:td(),card:CARDS[cards[0].id].ko});j=j.slice(0,8);localStorage.setItem('ktaro_j',JSON.stringify(j));}
 
 async function share(){const r=window._R;if(!r)return;await (document.fonts?document.fonts.ready:Promise.resolve());
