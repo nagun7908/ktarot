@@ -238,17 +238,32 @@ function spreadHtml(cards,labels,celtic){if(celtic)return celticHtml(cards);retu
 function celticHtml(cards){function mc(c){return '<img class="mc '+(c.o==='reversed'?'rev':'')+'" src="'+imgsrc(c.id)+'" alt="'+CARDS[c.id].ko+'" loading="lazy">';}function w(c,i,cls){return '<div class="mcw '+cls+'"><span class="cxnum">'+(i+1)+'</span>'+mc(c)+'</div>';}var cross='<div class="cx">'+w(cards[4],4,'p5')+w(cards[3],3,'p4')+'<div class="pc"><span class="cxnum">1</span><div class="c1">'+mc(cards[0])+'</div><div class="c2">'+mc(cards[1])+'</div></div>'+w(cards[5],5,'p6')+w(cards[2],2,'p3')+'</div>';var staff='<div class="staff">'+[9,8,7,6].map(function(i){return w(cards[i],i,'st');}).join('')+'</div>';return '<div class="celtic">'+cross+staff+'</div>';}
 function saveJournal(cat,sub,cards){let j=JSON.parse(localStorage.getItem('ktaro_j')||'[]');j.unshift({t:sub,e:cat.e,d:td(),card:CARDS[cards[0].id].ko});j=j.slice(0,8);localStorage.setItem('ktaro_j',JSON.stringify(j));}
 
-async function share(){const r=window._R;if(!r)return;await (document.fonts?document.fonts.ready:Promise.resolve());
- const cv=document.getElementById('cv'),x=cv.getContext('2d');const gr=x.createLinearGradient(0,0,0,1920);gr.addColorStop(0,'#241a3d');gr.addColorStop(.55,'#3d2a8c');gr.addColorStop(1,'#160f2e');x.fillStyle=gr;x.fillRect(0,0,1080,1920);
- x.textAlign='center';x.fillStyle='#ffd98a';x.font="700 62px 'Cinzel',Georgia,serif";x.fillText('MYTHOS',540,150);
- x.fillStyle='#d9ccff';x.font='400 34px Pretendard,sans-serif';x.fillText(r.cat.e+' '+r.sub,540,205);
- const im=new Image();im.src=imgsrc(r.cards[0].id);await new Promise(res=>{im.onload=res;im.onerror=res;});
- const cw=300,ch=486,cx=(1080-cw)/2,cy=270;try{x.save();if(r.cards[0].o==='reversed'){x.translate(cx+cw/2,cy+ch/2);x.rotate(Math.PI);x.drawImage(im,-cw/2,-ch/2,cw,ch);}else x.drawImage(im,cx,cy,cw,ch);x.restore();}catch(e){}
- x.fillStyle='#fff';x.font='800 52px Pretendard,sans-serif';x.fillText(CARDS[r.cards[0].id].ko+(r.cards[0].o==='reversed'?' (역)':''),540,880);
- x.fillStyle='#efeaff';x.font='400 40px Pretendard,sans-serif';wrap(x,r.synthTxt,540,970,900,58);
- x.fillStyle='#c9bdf0';x.font='400 34px Pretendard,sans-serif';wrap(x,'✦ '+r.remedy,540,1520,900,50);
- x.fillStyle='#8b7fb5';x.font='400 30px Pretendard,sans-serif';x.fillText('MYTHOS · Tarot Reading · '+td(),540,1840);
- const a=document.createElement('a');a.href=cv.toDataURL('image/png');a.download='atlas_'+td()+'.png';a.click();}
+async function share(){
+ const r=window._R;if(!r)return;await (document.fonts?document.fonts.ready:Promise.resolve());
+ const cv=document.getElementById('cv'),x=cv.getContext('2d'),W=1080,Hh=1920;
+ const gr=x.createLinearGradient(0,0,0,Hh);gr.addColorStop(0,'#241a3d');gr.addColorStop(.55,'#3d2a8c');gr.addColorStop(1,'#160f2e');x.fillStyle=gr;x.fillRect(0,0,W,Hh);
+ x.textAlign='center';x.fillStyle='#ffd98a';x.font="700 60px 'Cinzel',Georgia,serif";x.fillText('MYTHOS',W/2,138);
+ x.fillStyle='#d9ccff';x.font='400 34px Pretendard,sans-serif';x.fillText(r.cat.e+' '+r.sub,W/2,192);
+ const cards=r.cards,n=cards.length;
+ const imgs=await Promise.all(cards.map(function(c){return new Promise(function(res){var im=new Image();im.onload=function(){res(im);};im.onerror=function(){res(null);};im.src=imgsrc(c.id);});}));
+ const ref=imgs.find(function(i){return i;});const ar=ref?ref.naturalHeight/ref.naturalWidth:1.6;
+ let cols=n===1?1:n===2?2:n===3?3:n===4?2:5;
+ const rows=Math.ceil(n/cols),gapX=18,gapY=n>=5?52:44,topY=248,sideM=70;
+ let cardW=Math.min(n===1?310:300,(W-sideM*2-gapX*(cols-1))/cols),cardH=cardW*ar;
+ const maxGridH=980;if(rows*cardH+(rows-1)*gapY>maxGridH){cardH=(maxGridH-(rows-1)*gapY)/rows;cardW=cardH/ar;}
+ for(let i=0;i<n;i++){
+  const rI=Math.floor(i/cols),cI=i%cols,inRow=Math.min(cols,n-rI*cols),rowW=inRow*cardW+(inRow-1)*gapX;
+  const rx=(W-rowW)/2+cI*(cardW+gapX),ry=topY+rI*(cardH+gapY),c=cards[i],im=imgs[i];
+  if(im){x.save();if(c.o==='reversed'){x.translate(rx+cardW/2,ry+cardH/2);x.rotate(Math.PI);x.drawImage(im,-cardW/2,-cardH/2,cardW,cardH);}else x.drawImage(im,rx,ry,cardW,cardH);x.restore();}
+  else{x.fillStyle='#2a1f52';x.fillRect(rx,ry,cardW,cardH);}
+  x.fillStyle='#e9e2cf';x.font='600 '+(n>=5?20:24)+'px Pretendard,sans-serif';x.fillText(CARDS[c.id].ko+(c.o==='reversed'?'(역)':''),rx+cardW/2,ry+cardH+(n>=5?28:34));
+ }
+ const gridBottom=topY+rows*cardH+(rows-1)*gapY+70;
+ x.fillStyle='#efeaff';x.font='400 40px Pretendard,sans-serif';wrap(x,r.synthTxt,W/2,Math.min(gridBottom,1540),900,58);
+ x.fillStyle='#c9bdf0';x.font='400 34px Pretendard,sans-serif';wrap(x,'✦ '+r.remedy,W/2,1660,900,50);
+ x.fillStyle='#8b7fb5';x.font='400 30px Pretendard,sans-serif';x.fillText('MYTHOS · Tarot Reading · '+td(),W/2,1852);
+ const a=document.createElement('a');a.href=cv.toDataURL('image/png');a.download='mythos_'+td()+'.png';a.click();
+}
 function wrap(ctx,t,cx,cy,mw,lh){const w=t.split(' ');let l='',y=cy;for(const wd of w){const ts=l+wd+' ';if(ctx.measureText(ts).width>mw&&l){ctx.fillText(l.trim(),cx,y);l=wd+' ';y+=lh;}else l=ts;}ctx.fillText(l.trim(),cx,y);}
 function hideSplash(){const sp=document.getElementById('splash');if(!sp)return;sp.classList.add('hide');setTimeout(()=>sp.remove(),650);}
 setTimeout(hideSplash,2600);
